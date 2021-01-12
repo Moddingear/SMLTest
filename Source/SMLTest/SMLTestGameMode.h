@@ -3,14 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
-#include "SMLTestGameModeBase.generated.h"
+
+#include "GameFramework/GameMode.h"
+#include "SMLTestGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SMLTEST_API ASMLTestGameModeBase : public AGameModeBase
+class SMLTEST_API ASMLTestGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	

@@ -32,6 +32,10 @@
 				"Linux",
 				"Mac"
 			]
+		},
+		{
+			"Name": "PythonScriptPlugin",
+			"Enabled": true
 		}
 	]
 }
