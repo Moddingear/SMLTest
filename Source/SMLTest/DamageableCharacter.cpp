@@ -47,7 +47,8 @@ void ADamageableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 void ADamageableCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-		DOREPLIFETIME(ADamageableCharacter, Health);
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ADamageableCharacter, Health);
 }
 
 void ADamageableCharacter::InputAxisX_Implementation(float Value)

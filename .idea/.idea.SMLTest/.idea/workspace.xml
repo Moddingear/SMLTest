@@ -21,6 +21,7 @@
       <change beforePath="$PROJECT_DIR$/Content/untitled_category/untitled_asset/DroneGunBase.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/untitled_category/untitled_asset/Material.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SMLTest.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SMLTest.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" afterDir="false" />
     </list>
@@ -32,15 +33,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameModeBase.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameMode.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameMode.h" />
-      <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" />
-      <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1mfRjGtU73ZXXuMlZ52D8SIe5Rq" />
@@ -283,7 +288,7 @@
       <workItem from="1609952301656" duration="10382000" />
       <workItem from="1610033325924" duration="1351000" />
       <workItem from="1610096420904" duration="5807000" />
-      <workItem from="1610614219917" duration="2259000" />
+      <workItem from="1610614219917" duration="5159000" />
     </task>
     <servers />
   </component>

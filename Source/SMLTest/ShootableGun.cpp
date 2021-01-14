@@ -26,6 +26,7 @@ AShootableGun::AShootableGun()
 	bShootUnaligned = false;
 	
 	SetReplicates(true);
+	SetReplicatingMovement(true);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BaseMeshHelper(TEXT("StaticMesh'/Game/drone/DroneGunBase.DroneGunBase'"));
 	if(BaseMeshHelper.Succeeded())
@@ -57,6 +58,7 @@ void AShootableGun::BeginPlay()
 
 void AShootableGun::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION(AShootableGun, IgnoredActors, COND_OwnerOnly);
 }
 
@@ -96,7 +98,6 @@ FQuat AShootableGun::GetRotationInCone(FVector WorldLocation)
 
 bool AShootableGun::AimAt(FVector WorldLocation)
 {
-	
 	Gun->SetWorldRotation(GetRotationInCone(WorldLocation));
 	return IsInFiringCone(WorldLocation);
 }
@@ -120,14 +121,23 @@ void AShootableGun::Fire(FVector WorldLocation)
             	FVector FiringEnd = FiringStart + FiringRotation.GetForwardVector() * MaximumRange;
             	TArray<FHitResult> Hits;
             	FCollisionQueryParams Params;
-            	Params.AddIgnoredActors(IgnoredActors);
             	TArray<AActor*> ActorsHit;
             	if(GetWorld()->LineTraceMultiByProfile(Hits, FiringStart, FiringEnd, "Projectile"))
             	{
+                    for (int i = Hits.Num() - 1; i >= 0; --i)
+                    {
+                    	FHitResult Hit = Hits[i];
+	                    if (IgnoredActors.Contains(Hit.GetActor()))
+	                    {
+		                    Hits.RemoveAt(i);
+	                    }
+                    }
+            		
             		float StartDistance = Hits[0].Distance;
             		
             		for (FHitResult Hit : Hits)
             		{
+            			//UE_LOG(LogTemp, Log, TEXT("Hit %s, distance %f < MaxDistance %f"), *Hit.GetActor()->GetName(), Hit.Distance, StartDistance + MaxDistanceAfterPenetration)
             			if (Hit.Distance <= StartDistance + MaxDistanceAfterPenetration)
             			{
             				ActorsHit.AddUnique(Hit.GetActor());
@@ -148,7 +158,7 @@ void AShootableGun::RegisterRaycastHit_Implementation(const TArray<AActor*>& Hit
 	AController* DamageInstigator = nullptr;
     if (GetInstigator())
     {
-    	UE_LOG(LogTemp, Log, TEXT("Instigator is valid"));
+    	//UE_LOG(LogTemp, Log, TEXT("Instigator is valid"));
         DamageInstigator = GetInstigator()->GetController();
     }
 	else
@@ -157,7 +167,7 @@ void AShootableGun::RegisterRaycastHit_Implementation(const TArray<AActor*>& Hit
 	}
 	for (int i = 0; i < Hit.Num(); ++i)
 	{
-		UE_LOG(LogTemp, Log, TEXT("%s was hit"), *Hit[i]->GetName());
+		//UE_LOG(LogTemp, Log, TEXT("%s was hit"), *Hit[i]->GetName());
 		Hit[i]->TakeDamage(Damage, FDamageEvent(), DamageInstigator, this);
 	}
 	PlayFiringAnimation(StartLocation, EndLocation);
