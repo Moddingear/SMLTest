@@ -9,6 +9,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Math/UnrealMathUtility.h"
+#include "KismetCompiler"
 
 // Sets default values
 AShootableGun::AShootableGun()
@@ -96,6 +97,18 @@ FQuat AShootableGun::GetRotationInCone(FVector WorldLocation)
 	}
 }
 
+void AShootableGun::RemoveIgnoredFromLineTrace(TArray<FHitResult>& HitResults)
+{
+	for (int i = HitResults.Num() - 1; i >= 0; --i)
+	{
+		FHitResult Hit = HitResults[i];
+		if (IgnoredActors.Contains(Hit.GetActor()))
+		{
+			HitResults.RemoveAt(i);
+		}
+	}
+}
+
 bool AShootableGun::AimAt(FVector WorldLocation)
 {
 	Gun->SetWorldRotation(GetRotationInCone(WorldLocation));
@@ -121,17 +134,11 @@ void AShootableGun::Fire(FVector WorldLocation)
             	FVector FiringEnd = FiringStart + FiringRotation.GetForwardVector() * MaximumRange;
             	TArray<FHitResult> Hits;
             	FCollisionQueryParams Params;
+            	Params.bTraceComplex = false;
             	TArray<AActor*> ActorsHit;
             	if(GetWorld()->LineTraceMultiByProfile(Hits, FiringStart, FiringEnd, "Projectile"))
             	{
-                    for (int i = Hits.Num() - 1; i >= 0; --i)
-                    {
-                    	FHitResult Hit = Hits[i];
-	                    if (IgnoredActors.Contains(Hit.GetActor()))
-	                    {
-		                    Hits.RemoveAt(i);
-	                    }
-                    }
+                    RemoveIgnoredFromLineTrace(Hits);
             		
             		float StartDistance = Hits[0].Distance;
             		
@@ -145,6 +152,7 @@ void AShootableGun::Fire(FVector WorldLocation)
             			}
             		}
             	}
+            	UKismet
             	RegisterRaycastHit(ActorsHit, TimeOfFiring, FiringStart, FiringEnd);
             	PlayFiringAnimation(FiringStart, FiringEnd);
             }

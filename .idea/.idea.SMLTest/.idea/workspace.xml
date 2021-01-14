@@ -24,6 +24,7 @@
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +35,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/KismetTraceUtils.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Public/CollisionQueryParams.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/Actor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/KismetSystemLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/KismetTraceUtils.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectMacros.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -42,9 +49,9 @@
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameModeBase.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameMode.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameMode.h" />
-      <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" />
     </changedPaths>
   </component>
@@ -288,7 +295,7 @@
       <workItem from="1609952301656" duration="10382000" />
       <workItem from="1610033325924" duration="1351000" />
       <workItem from="1610096420904" duration="5807000" />
-      <workItem from="1610614219917" duration="5159000" />
+      <workItem from="1610614219917" duration="7536000" />
     </task>
     <servers />
   </component>

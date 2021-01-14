@@ -71,6 +71,9 @@ public:
 	FQuat GetRotationInCone(FVector WorldLocation);
 
 	UFUNCTION(BlueprintCallable)
+	void RemoveIgnoredFromLineTrace(UPARAM(ref) TArray<FHitResult> &HitResults);
+	
+	UFUNCTION(BlueprintCallable)
 	bool AimAt(FVector WorldLocation);
 
 	UFUNCTION(BlueprintCallable)
