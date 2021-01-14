@@ -27,7 +27,7 @@ AShootableGun::AShootableGun()
 	
 	SetReplicates(true);
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> BaseMeshHelper(TEXT(""));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> BaseMeshHelper(TEXT("StaticMesh'/Game/drone/DroneGunBase.DroneGunBase'"));
 	if(BaseMeshHelper.Succeeded())
 	{
 		BaseMesh = BaseMeshHelper.Object;
@@ -37,7 +37,7 @@ AShootableGun::AShootableGun()
 	Base->SetStaticMesh(BaseMesh);
 	RootComponent = Base;
 	
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> GunMeshHelper(TEXT(""));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> GunMeshHelper(TEXT("StaticMesh'/Game/drone/DroneGun.DroneGun'"));
 	if(GunMeshHelper.Succeeded())
 	{
 		GunMesh = GunMeshHelper.Object;

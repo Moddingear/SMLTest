@@ -12,10 +12,10 @@ class SMLTEST_API ADamageableCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(Replicated,EditAnywhere)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 	float Health;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxHealth;
 	// Sets default values for this character's properties
 	ADamageableCharacter();
