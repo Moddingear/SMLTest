@@ -5,17 +5,18 @@
 
 
 
+#include "DrawDebugHelpers.h"
 #include "GeneratedCodeHelpers.h"
+#include "SMLTest.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Math/UnrealMathUtility.h"
-#include "KismetCompiler"
 
 // Sets default values
 AShootableGun::AShootableGun()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	Firerate = 1.f;
 	Damage = 1.f;
 	NextTimeFireable = 0;
@@ -61,13 +62,31 @@ void AShootableGun::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION(AShootableGun, IgnoredActors, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(AShootableGun, Target, COND_SkipOwner);
 }
 
 // Called every frame
 void AShootableGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (GetInstigatorController()) //if it's not controlled locally, then the controller will not exist
+	{
+		if(GetInstigatorController()->IsLocalController())
+		{
+			return;
+		}
+	}
+	AimAt(Target);
+}
 
+void AShootableGun::SendTarget_Implementation(FVector NewTarget)
+{
+	Target = NewTarget;
+}
+
+bool AShootableGun::SendTarget_Validate(FVector NewTarget)
+{
+	return true;
 }
 
 bool AShootableGun::IsInFiringCone(FVector WorldLocation)
@@ -76,6 +95,16 @@ bool AShootableGun::IsInFiringCone(FVector WorldLocation)
 	FVector axis = vector.GetSafeNormal();
 	float scalar = axis | GetActorForwardVector();
 	return scalar > cosf(FMath::DegreesToRadians<float>(MaximumAngleFromForward));
+}
+
+bool AShootableGun::IsRecharged()
+{
+	return UKismetSystemLibrary::GetGameTimeInSeconds(this) > NextTimeFireable;
+}
+
+bool AShootableGun::CanFireAt(FVector WorldLocation)
+{
+	return IsRecharged() && (IsInFiringCone(WorldLocation) || bShootUnaligned);
 }
 
 FQuat AShootableGun::GetRotationInCone(FVector WorldLocation)
@@ -112,14 +141,20 @@ void AShootableGun::RemoveIgnoredFromLineTrace(TArray<FHitResult>& HitResults)
 bool AShootableGun::AimAt(FVector WorldLocation)
 {
 	Gun->SetWorldRotation(GetRotationInCone(WorldLocation));
+	if(GetOwner())
+	{
+		SendTarget(WorldLocation);
+	}
 	return IsInFiringCone(WorldLocation);
 }
 
 void AShootableGun::Fire(FVector WorldLocation)
 {
+	//UE_LOG(LogSML, Log, TEXT("Fire command received"))
 	if(bShootUnaligned || IsInFiringCone(WorldLocation))
 	{
 		const float TimeOfFiring = UKismetSystemLibrary::GetGameTimeInSeconds(this);
+		//UE_LOG(LogSML, Log, TEXT("Is is firing cone; Time = %f, NextTimeFireable = %f"), TimeOfFiring, NextTimeFireable);
 		if (TimeOfFiring > NextTimeFireable)
 		{
 			NextTimeFireable = TimeOfFiring + 1/Firerate;
@@ -136,12 +171,11 @@ void AShootableGun::Fire(FVector WorldLocation)
             	FCollisionQueryParams Params;
             	Params.bTraceComplex = false;
             	TArray<AActor*> ActorsHit;
-            	if(GetWorld()->LineTraceMultiByProfile(Hits, FiringStart, FiringEnd, "Projectile"))
+            	GetWorld()->LineTraceMultiByProfile(Hits, FiringStart, FiringEnd, "Projectile");
+                RemoveIgnoredFromLineTrace(Hits);
+            	if(Hits.Num() > 0)
             	{
-                    RemoveIgnoredFromLineTrace(Hits);
-            		
             		float StartDistance = Hits[0].Distance;
-            		
             		for (FHitResult Hit : Hits)
             		{
             			//UE_LOG(LogTemp, Log, TEXT("Hit %s, distance %f < MaxDistance %f"), *Hit.GetActor()->GetName(), Hit.Distance, StartDistance + MaxDistanceAfterPenetration)
@@ -149,10 +183,11 @@ void AShootableGun::Fire(FVector WorldLocation)
             			{
             				ActorsHit.AddUnique(Hit.GetActor());
             				FiringEnd = Hit.Location;
+            				//DrawDebugPoint(GetWorld(), Hit.Location, 1, FColor::Green, false, 5);
             			}
             		}
             	}
-            	UKismet
+            	//DrawDebugLine(GetWorld(), FiringStart, FiringEnd, FColor::Red, false, 5);
             	RegisterRaycastHit(ActorsHit, TimeOfFiring, FiringStart, FiringEnd);
             	PlayFiringAnimation(FiringStart, FiringEnd);
             }

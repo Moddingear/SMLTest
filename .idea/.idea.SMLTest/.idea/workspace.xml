@@ -9,20 +9,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47935d0a-0147-4f53-83e0-5577950f1b8e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/riderModule.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/riderModule.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/GameMode0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/GameMode0.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/DroneDJI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DroneDJI.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/DroneGun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DroneGun.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/map0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/map0.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/untitled_category/untitled_asset/DroneBody.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/untitled_category/untitled_asset/DroneGun.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/untitled_category/untitled_asset/DroneGunBase.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/untitled_category/untitled_asset/Material.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SMLTest.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SMLTest.uproject" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SMLTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SMLTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SMLTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SMLTest.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" afterDir="false" />
     </list>
@@ -49,6 +43,8 @@
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameModeBase.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameMode.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTestGameMode.h" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/SMLTest.h" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/SMLTest.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" />
@@ -296,6 +292,7 @@
       <workItem from="1610033325924" duration="1351000" />
       <workItem from="1610096420904" duration="5807000" />
       <workItem from="1610614219917" duration="7536000" />
+      <workItem from="1610721102870" duration="3869000" />
     </task>
     <servers />
   </component>

@@ -42,7 +42,8 @@ void ADamageableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis("MouseUpDown", this, &ADamageableCharacter::InputMouseVertical);
 	PlayerInputComponent->BindAxis("Rotation", this, &ADamageableCharacter::InputRotation);
 
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ADamageableCharacter::InputFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ADamageableCharacter::InputFirePressed);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ADamageableCharacter::InputFireReleased);
 }
 
 void ADamageableCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -75,7 +76,11 @@ void ADamageableCharacter::InputRotation_Implementation(float Value)
 {
 }
 
-void ADamageableCharacter::InputFire_Implementation()
+void ADamageableCharacter::InputFirePressed_Implementation()
+{
+}
+
+void ADamageableCharacter::InputFireReleased_Implementation()
 {
 }
 

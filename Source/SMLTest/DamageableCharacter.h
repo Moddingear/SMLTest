@@ -53,8 +53,12 @@ public:
 	virtual void InputRotation_Implementation(float Value);
 
 	UFUNCTION(BlueprintNativeEvent)
-	void InputFire();
-	virtual void InputFire_Implementation();
+	void InputFirePressed();
+	virtual void InputFirePressed_Implementation();
+	
+	UFUNCTION(BlueprintNativeEvent)
+    void InputFireReleased();
+	virtual void InputFireReleased_Implementation();
 
 	UFUNCTION(BlueprintNativeEvent)
 	void OnDeath();

@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	TArray<AActor*> IgnoredActors;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+	FVector Target; //Used to replicate gun rotation
+
 	UPROPERTY(EditAnywhere)
 	UStaticMesh* BaseMesh;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
@@ -66,8 +69,19 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, Server, Unreliable, WithValidation)
+	void SendTarget(FVector NewTarget); //Cosmetic, updates the aimed location for other players
+
+	UFUNCTION(BlueprintPure)
 	bool IsInFiringCone(FVector WorldLocation);
 
+	UFUNCTION(BlueprintPure)
+	bool IsRecharged();
+
+	UFUNCTION(BlueprintPure)
+	bool CanFireAt(FVector WorldLocation);
+
+	UFUNCTION(BlueprintPure)
 	FQuat GetRotationInCone(FVector WorldLocation);
 
 	UFUNCTION(BlueprintCallable)
