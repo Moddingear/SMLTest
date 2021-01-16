@@ -53,6 +53,8 @@
           <e p="ConeGun.h" t="Include" />
           <e p="DamageableCharacter.cpp" t="Include" />
           <e p="DamageableCharacter.h" t="Include" />
+          <e p="Projectile.cpp" t="Include" />
+          <e p="Projectile.h" t="Include" />
           <e p="ShootableGun.cpp" t="Include" />
           <e p="ShootableGun.h" t="Include" />
           <e p="SMLTest.Build.cs" t="Include" />

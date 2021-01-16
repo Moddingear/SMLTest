@@ -3,10 +3,13 @@
 
 #include "ShootableGun.h"
 
+#include <ThirdParty/CryptoPP/5.6.5/include/misc.h>
+
 
 
 #include "DrawDebugHelpers.h"
 #include "GeneratedCodeHelpers.h"
+#include "Projectile.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
@@ -22,6 +25,8 @@ AShootableGun::AShootableGun()
 	MaxDistanceAfterPenetration = 0;
 	MaximumRange = 100 * 1000;
 	bShootUnaligned = false;
+
+	ProjectileClass = AProjectile::StaticClass();
 	
 	SetReplicates(true);
 	SetReplicatingMovement(true);
@@ -141,7 +146,13 @@ void AShootableGun::Fire(FVector WorldLocation)
 			FVector FiringStart = GetActorLocation() + FiringRotation.GetForwardVector() * DistanceFromCannon;
 			if (bIsProjectile)
             {
-            	//GetWorld()->SpawnActorDeferred<AActor>(ProjectileClass, FTransform(FiringStart), this, GetInstigator(), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+            	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileClass, FTransform(FiringStart), this, GetInstigator(), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+				Projectile->InitializeProjectile(FiringRotation.GetForwardVector() * ProjectileSpeed, Damage, MaximumRange/ProjectileSpeed, IgnoredActors, GetWorld()->IsServer());
+				Projectile->FinishSpawning(FTransform(FiringStart));
+                if (!GetWorld()->IsServer())
+                {
+	                RegisterProjectile(FiringRotation.GetForwardVector(), TimeOfFiring);
+                }
             }
             else
             {
@@ -172,6 +183,34 @@ void AShootableGun::Fire(FVector WorldLocation)
             }
 		}
 	}
+}
+
+void AShootableGun::RegisterProjectile_Implementation(const FVector Axis, const float FiringTime)
+{
+	const FVector FiringStart = GetActorLocation() + Axis * DistanceFromCannon;
+	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileClass, FTransform(FiringStart), this, GetInstigator(), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+	Projectile->InitializeProjectile(Axis * ProjectileSpeed, Damage, MaximumRange/ProjectileSpeed, IgnoredActors, false);
+	Projectile->FinishSpawning(FTransform(FiringStart));
+}
+
+bool AShootableGun::RegisterProjectile_Validate(const FVector Axis, const float FiringTime)
+{
+	if (!GetWorld()->IsServer())
+	{
+		if (FiringTime > UKismetSystemLibrary::GetGameTimeInSeconds(this)) //check if time is valid
+		{
+		return false;
+		}
+		if (!bIsProjectile) //check if it's raycast
+		{
+		return false;
+		}
+		if (FiringTime + 1.0/FireRate/20.f < NextTimeFireable) //check if it can fire
+		{
+		return false;
+		}
+	}
+	return true;
 }
 
 void AShootableGun::RegisterLineTraceHit_Implementation(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation)

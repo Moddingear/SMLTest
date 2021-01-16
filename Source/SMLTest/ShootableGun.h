@@ -52,7 +52,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	UStaticMeshComponent* Gun;
 
-	TSubclassOf<AActor> ProjectileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class AProjectile> ProjectileClass;
 	// Sets default values for this actor's properties
 	AShootableGun();
 
@@ -89,6 +90,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Fire(FVector WorldLocation);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void RegisterProjectile(const FVector Axis, const float FiringTime);
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void RegisterLineTraceHit(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation);

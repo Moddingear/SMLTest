@@ -18,7 +18,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float PhiRange; //How far left/right can the gun go [0, 180]
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float ThetaMin; //How high can the gun go [0, 180]
+	float ThetaMin; //How high can the gun go, where 0 is up and 180 is down [0, 180]
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float ThetaMax; //How low can the gun go [0, 180]
 
