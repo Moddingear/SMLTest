@@ -9,14 +9,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47935d0a-0147-4f53-83e0-5577950f1b8e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/riderModule.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/riderModule.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/DroneDJI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DroneDJI.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/DroneGun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DroneGun.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/map0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/map0.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SMLTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SMLTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SMLTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SMLTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SMLTest.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SMLTest.uproject" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" afterDir="false" />
     </list>
@@ -29,14 +26,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/KismetTraceUtils.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Public/CollisionQueryParams.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/Actor.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/KismetSystemLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/KismetTraceUtils.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectMacros.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://D:/Epic/UE_4.25/Engine/Source/Runtime/Core/Public/Math/Vector.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -47,6 +37,10 @@
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTest.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/ThetaPhiGun.h" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/ThetaPhiGun.cpp" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/ConeGun.h" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/ConeGun.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" />
     </changedPaths>
@@ -293,6 +287,9 @@
       <workItem from="1610096420904" duration="5807000" />
       <workItem from="1610614219917" duration="7536000" />
       <workItem from="1610721102870" duration="3869000" />
+      <workItem from="1610787643151" duration="347000" />
+      <workItem from="1610788057348" duration="2320000" />
+      <workItem from="1610790441601" duration="517000" />
     </task>
     <servers />
   </component>

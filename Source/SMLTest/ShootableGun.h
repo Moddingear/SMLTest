@@ -13,7 +13,7 @@ class SMLTEST_API AShootableGun : public AActor
 	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Firerate;
+	float FireRate;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Damage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -32,9 +32,6 @@ public:
 	//Used for length of raycast and lifetime of projectile
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaximumRange;
-	//goes from 0 (only straight forward) to 180 (anywhere around)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MaximumAngleFromForward;
 	//should this gun shoot if the reticule is out of the area ?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bShootUnaligned;
@@ -73,28 +70,28 @@ public:
 	void SendTarget(FVector NewTarget); //Cosmetic, updates the aimed location for other players
 
 	UFUNCTION(BlueprintPure)
-	bool IsInFiringCone(FVector WorldLocation);
+	virtual bool IsInRotationRange(FVector WorldLocation);
 
 	UFUNCTION(BlueprintPure)
-	bool IsRecharged();
+	virtual bool IsRecharged();
 
 	UFUNCTION(BlueprintPure)
-	bool CanFireAt(FVector WorldLocation);
+	virtual bool CanFireAt(FVector WorldLocation);
 
 	UFUNCTION(BlueprintPure)
-	FQuat GetRotationInCone(FVector WorldLocation);
+	virtual FQuat GetRotationInRange(FVector WorldLocation); //world rotation
 
 	UFUNCTION(BlueprintCallable)
 	void RemoveIgnoredFromLineTrace(UPARAM(ref) TArray<FHitResult> &HitResults);
 	
 	UFUNCTION(BlueprintCallable)
-	bool AimAt(FVector WorldLocation);
+	virtual bool AimAt(FVector WorldLocation);
 
 	UFUNCTION(BlueprintCallable)
 	void Fire(FVector WorldLocation);
 
 	UFUNCTION(Server, Reliable, WithValidation)
-	void RegisterRaycastHit(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation);
+	void RegisterLineTraceHit(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation);
 
 	UFUNCTION(NetMulticast, Unreliable)
 	void PlayFiringAnimationServer(FVector StartLocation, FVector EndLocation);

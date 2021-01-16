@@ -7,24 +7,20 @@
 
 #include "DrawDebugHelpers.h"
 #include "GeneratedCodeHelpers.h"
-#include "SMLTest.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Math/UnrealMathUtility.h"
 
 // Sets default values
 AShootableGun::AShootableGun()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	Firerate = 1.f;
+	FireRate = 1.f;
 	Damage = 1.f;
 	NextTimeFireable = 0;
 	bIsProjectile = false;
 	ProjectileSpeed = 10000;
 	MaxDistanceAfterPenetration = 0;
 	MaximumRange = 100 * 1000;
-	MaximumAngleFromForward = 90;
 	bShootUnaligned = false;
 	
 	SetReplicates(true);
@@ -79,7 +75,7 @@ void AShootableGun::Tick(float DeltaTime)
 	AimAt(Target);
 }
 
-void AShootableGun::SendTarget_Implementation(FVector NewTarget)
+void AShootableGun::SendTarget_Implementation(const FVector NewTarget)
 {
 	Target = NewTarget;
 }
@@ -89,12 +85,9 @@ bool AShootableGun::SendTarget_Validate(FVector NewTarget)
 	return true;
 }
 
-bool AShootableGun::IsInFiringCone(FVector WorldLocation)
+bool AShootableGun::IsInRotationRange(const FVector WorldLocation)
 {
-	FVector vector = WorldLocation - GetActorLocation();
-	FVector axis = vector.GetSafeNormal();
-	float scalar = axis | GetActorForwardVector();
-	return scalar > cosf(FMath::DegreesToRadians<float>(MaximumAngleFromForward));
+	return false;
 }
 
 bool AShootableGun::IsRecharged()
@@ -104,26 +97,12 @@ bool AShootableGun::IsRecharged()
 
 bool AShootableGun::CanFireAt(FVector WorldLocation)
 {
-	return IsRecharged() && (IsInFiringCone(WorldLocation) || bShootUnaligned);
+	return IsRecharged() && (IsInRotationRange(WorldLocation) || bShootUnaligned);
 }
 
-FQuat AShootableGun::GetRotationInCone(FVector WorldLocation)
+FQuat AShootableGun::GetRotationInRange(FVector WorldLocation)
 {
-	const FVector vector = WorldLocation - GetActorLocation();
-	const FVector axis = vector.GetSafeNormal();
-	const FQuat IdealRotation = UKismetMathLibrary::MakeRotFromXZ(axis, GetActorUpVector()).Quaternion();
-	if (IsInFiringCone(WorldLocation))
-	{
-		//is in allowed cone
-		return IdealRotation;
-	}
-	else
-	{
-		const FQuat ForwardRotator = GetActorRotation().Quaternion();
-		const float angle = IdealRotation.AngularDistance(ForwardRotator);
-		const FQuat TargetRotator = FQuat::Slerp(ForwardRotator, IdealRotation, FMath::DegreesToRadians<float>(MaximumAngleFromForward) / angle /2.0);
-		return TargetRotator;
-	}
+	return GetActorQuat();
 }
 
 void AShootableGun::RemoveIgnoredFromLineTrace(TArray<FHitResult>& HitResults)
@@ -140,25 +119,25 @@ void AShootableGun::RemoveIgnoredFromLineTrace(TArray<FHitResult>& HitResults)
 
 bool AShootableGun::AimAt(FVector WorldLocation)
 {
-	Gun->SetWorldRotation(GetRotationInCone(WorldLocation));
+	Gun->SetWorldRotation(GetRotationInRange(WorldLocation));
 	if(GetOwner())
 	{
 		SendTarget(WorldLocation);
 	}
-	return IsInFiringCone(WorldLocation);
+	return IsInRotationRange(WorldLocation);
 }
 
 void AShootableGun::Fire(FVector WorldLocation)
 {
 	//UE_LOG(LogSML, Log, TEXT("Fire command received"))
-	if(bShootUnaligned || IsInFiringCone(WorldLocation))
+	if(bShootUnaligned || IsInRotationRange(WorldLocation))
 	{
 		const float TimeOfFiring = UKismetSystemLibrary::GetGameTimeInSeconds(this);
 		//UE_LOG(LogSML, Log, TEXT("Is is firing cone; Time = %f, NextTimeFireable = %f"), TimeOfFiring, NextTimeFireable);
 		if (TimeOfFiring > NextTimeFireable)
 		{
-			NextTimeFireable = TimeOfFiring + 1/Firerate;
-			FQuat FiringRotation = GetRotationInCone(WorldLocation);
+			NextTimeFireable = TimeOfFiring + 1/FireRate;
+			FQuat FiringRotation = GetRotationInRange(WorldLocation);
 			FVector FiringStart = GetActorLocation() + FiringRotation.GetForwardVector() * DistanceFromCannon;
 			if (bIsProjectile)
             {
@@ -188,16 +167,16 @@ void AShootableGun::Fire(FVector WorldLocation)
             		}
             	}
             	//DrawDebugLine(GetWorld(), FiringStart, FiringEnd, FColor::Red, false, 5);
-            	RegisterRaycastHit(ActorsHit, TimeOfFiring, FiringStart, FiringEnd);
+            	RegisterLineTraceHit(ActorsHit, TimeOfFiring, FiringStart, FiringEnd);
             	PlayFiringAnimation(FiringStart, FiringEnd);
             }
 		}
 	}
 }
 
-void AShootableGun::RegisterRaycastHit_Implementation(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation)
+void AShootableGun::RegisterLineTraceHit_Implementation(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation)
 {
-	NextTimeFireable = FiringTime + 1/Firerate;
+	NextTimeFireable = FiringTime + 1/FireRate;
 	AController* DamageInstigator = nullptr;
     if (GetInstigator())
     {
@@ -216,7 +195,7 @@ void AShootableGun::RegisterRaycastHit_Implementation(const TArray<AActor*>& Hit
 	PlayFiringAnimation(StartLocation, EndLocation);
 }
 
-bool AShootableGun::RegisterRaycastHit_Validate(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation)
+bool AShootableGun::RegisterLineTraceHit_Validate(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation)
 {
 	if (!GetWorld()->IsServer())
 	{
@@ -232,7 +211,7 @@ bool AShootableGun::RegisterRaycastHit_Validate(const TArray<AActor*>& Hit, cons
 		{
 			return false;
 		}
-		if (FiringTime + 1.0/Firerate/20.f < NextTimeFireable) //check if it can fire
+		if (FiringTime + 1.0/FireRate/20.f < NextTimeFireable) //check if it can fire
 		{
 			return false;
 		}
