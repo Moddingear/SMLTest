@@ -14,5 +14,8 @@ UCLASS()
 class SMLTEST_API ASMLTestGameMode : public AGameMode
 {
 	GENERATED_BODY()
+	ASMLTestGameMode();
+
+	
 	
 };

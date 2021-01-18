@@ -3,3 +3,13 @@
 
 #include "SMLTestGameMode.h"
 
+
+#include "DamageableCharacter.h"
+#include "SMLPlayerController.h"
+
+ASMLTestGameMode::ASMLTestGameMode()
+{
+	PlayerControllerClass = ASMLPlayerController::StaticClass();
+	DefaultPawnClass = ADamageableCharacter::StaticClass();
+	MinRespawnDelay = 3;
+}
