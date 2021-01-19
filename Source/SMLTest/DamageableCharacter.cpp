@@ -4,6 +4,7 @@
 #include "DamageableCharacter.h"
 
 #include "GeneratedCodeHelpers.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ADamageableCharacter::ADamageableCharacter()
@@ -14,6 +15,7 @@ ADamageableCharacter::ADamageableCharacter()
     Health = MaxHealth;
 	SetReplicates(true);
 	SetReplicateMovement(true);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 }
 
 // Called when the game starts or when spawned

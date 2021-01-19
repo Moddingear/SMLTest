@@ -6,13 +6,15 @@
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class SMLTEST_API AProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<AActor*> IgnoreList;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Damage;
 
 	void InitializeProjectile(FVector Velocity, float InDamage, float Lifespan, TArray<AActor*>& InIgnoreList, bool bVisibleToOwner);
@@ -32,8 +34,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-	
-	virtual void OnOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                       int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
+	virtual void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 };

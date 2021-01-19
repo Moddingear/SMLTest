@@ -3,13 +3,10 @@
 
 #include "ShootableGun.h"
 
-#include <ThirdParty/CryptoPP/5.6.5/include/misc.h>
-
-
-
 #include "DrawDebugHelpers.h"
 #include "GeneratedCodeHelpers.h"
 #include "Projectile.h"
+#include "SMLTest.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
@@ -146,9 +143,7 @@ void AShootableGun::Fire(FVector WorldLocation)
 			FVector FiringStart = GetActorLocation() + FiringRotation.GetForwardVector() * DistanceFromCannon;
 			if (bIsProjectile)
             {
-            	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileClass, FTransform(FiringStart), this, GetInstigator(), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-				Projectile->InitializeProjectile(FiringRotation.GetForwardVector() * ProjectileSpeed, Damage, MaximumRange/ProjectileSpeed, IgnoredActors, GetWorld()->IsServer());
-				Projectile->FinishSpawning(FTransform(FiringStart));
+            	//AProjectile* Projectile = SpawnProjectile(FTransform(FiringStart), FiringRotation.GetForwardVector()*ProjectileSpeed + GetVelocity(), GetWorld()->IsServer());
                 if (!GetWorld()->IsServer())
                 {
 	                RegisterProjectile(FiringRotation.GetForwardVector(), TimeOfFiring);
@@ -161,7 +156,7 @@ void AShootableGun::Fire(FVector WorldLocation)
             	FCollisionQueryParams Params;
             	Params.bTraceComplex = false;
             	TArray<AActor*> ActorsHit;
-            	GetWorld()->LineTraceMultiByProfile(Hits, FiringStart, FiringEnd, "Projectile");
+            	GetWorld()->LineTraceMultiByProfile(Hits, FiringStart, FiringEnd, "ProjectileTrace");
                 RemoveIgnoredFromLineTrace(Hits);
             	if(Hits.Num() > 0)
             	{
@@ -185,12 +180,20 @@ void AShootableGun::Fire(FVector WorldLocation)
 	}
 }
 
+AProjectile* AShootableGun::SpawnProjectile(FTransform SpawnTransform, FVector InitialVelocity, bool bVisibleToOwner)
+{
+	UE_LOG(LogSML, Log, TEXT("Spawning projectile, bVisibleToOwner = %d"), bVisibleToOwner);
+	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileClass, SpawnTransform, this, GetInstigator(), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+	Projectile->InitializeProjectile(InitialVelocity, Damage, MaximumRange/ProjectileSpeed, IgnoredActors, bVisibleToOwner);
+	Projectile->FinishSpawning(SpawnTransform);
+	//Projectile->InitializeProjectile(InitialVelocity, Damage, MaximumRange/ProjectileSpeed, IgnoredActors, GetWorld()->IsServer());
+	return Projectile;
+}
+
 void AShootableGun::RegisterProjectile_Implementation(const FVector Axis, const float FiringTime)
 {
 	const FVector FiringStart = GetActorLocation() + Axis * DistanceFromCannon;
-	AProjectile* Projectile = GetWorld()->SpawnActorDeferred<AProjectile>(ProjectileClass, FTransform(FiringStart), this, GetInstigator(), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-	Projectile->InitializeProjectile(Axis * ProjectileSpeed, Damage, MaximumRange/ProjectileSpeed, IgnoredActors, false);
-	Projectile->FinishSpawning(FTransform(FiringStart));
+	SpawnProjectile(FTransform(FiringStart), Axis * ProjectileSpeed + GetVelocity(), true);
 }
 
 bool AShootableGun::RegisterProjectile_Validate(const FVector Axis, const float FiringTime)

@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "DamageableCharacter.generated.h"
 
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class SMLTEST_API ADamageableCharacter : public ACharacter
 {
 	GENERATED_BODY()

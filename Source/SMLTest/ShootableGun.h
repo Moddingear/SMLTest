@@ -6,7 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "ShootableGun.generated.h"
 
-UCLASS()
+class AProjectile;
+
+UCLASS(BlueprintType, Blueprintable)
 class SMLTEST_API AShootableGun : public AActor
 {
 	GENERATED_BODY()
@@ -53,7 +55,7 @@ public:
 	UStaticMeshComponent* Gun;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class AProjectile> ProjectileClass;
+	TSubclassOf<AProjectile> ProjectileClass;
 	// Sets default values for this actor's properties
 	AShootableGun();
 
@@ -90,6 +92,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Fire(FVector WorldLocation);
+
+	AProjectile* SpawnProjectile(FTransform SpawnTransform, FVector InitialVelocity, bool bVisibleToOwner);
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void RegisterProjectile(const FVector Axis, const float FiringTime);
