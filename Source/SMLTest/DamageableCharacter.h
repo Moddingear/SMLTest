@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Character.h"
 #include "DamageableCharacter.generated.h"
 
+class ASpawnPoint;
+enum class ECraftScale : uint8;
 UCLASS(BlueprintType, Blueprintable)
 class SMLTEST_API ADamageableCharacter : public ACharacter
 {
@@ -17,6 +20,16 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float RespawnDelay;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ECraftScale CraftScale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated)
+	int32 Team;
+	
 	// Sets default values for this character's properties
 	ADamageableCharacter();
 

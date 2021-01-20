@@ -3,6 +3,7 @@
 
 #include "DamageableCharacter.h"
 
+#include "CraftScale.h"
 #include "GeneratedCodeHelpers.h"
 #include "Components/CapsuleComponent.h"
 
@@ -13,6 +14,8 @@ ADamageableCharacter::ADamageableCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	MaxHealth = 1.0f;
     Health = MaxHealth;
+	RespawnDelay = 1.f;
+	CraftScale = ECraftScale::None;
 	SetReplicates(true);
 	SetReplicateMovement(true);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
@@ -52,6 +55,7 @@ void ADamageableCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ADamageableCharacter, Health);
+	DOREPLIFETIME_CONDITION(ADamageableCharacter, Team, COND_InitialOnly);
 }
 
 void ADamageableCharacter::InputAxisX_Implementation(float Value)

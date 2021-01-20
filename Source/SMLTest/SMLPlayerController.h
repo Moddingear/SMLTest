@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "SMLPlayerController.generated.h"
 
+class ASpawnPoint;
 /**
  * 
  */
@@ -21,6 +22,9 @@ public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float DeathTime;
+	
 	UFUNCTION(BlueprintNativeEvent)
 	void InputMenuPressed();
 	virtual void InputMenuPressed_Implementation();
@@ -45,6 +49,6 @@ public:
 	virtual void CloseRespawnMenu_Implementation();
 
 	UFUNCTION(Server, BlueprintCallable, Reliable, WithValidation)
-	void AskRespawn(TSubclassOf<class ADamageableCharacter> Class);
+	void AskRespawn(TSubclassOf<class ADamageableCharacter> Class, int32 Team, ASpawnPoint* SpawnPoint);
 	
 };
