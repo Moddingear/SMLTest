@@ -27,6 +27,7 @@ AShootableGun::AShootableGun()
 	
 	SetReplicates(true);
 	SetReplicatingMovement(true);
+	bNetUseOwnerRelevancy = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BaseMeshHelper(TEXT("StaticMesh'/Game/drone/DroneGunBase.DroneGunBase'"));
 	if(BaseMeshHelper.Succeeded())

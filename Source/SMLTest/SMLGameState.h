@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 
+
 #include "GameFramework/GameState.h"
 #include "SMLGameState.generated.h"
 
+class ASpawnPoint;
 class ADamageableCharacter;
 
 USTRUCT(BlueprintType)
@@ -25,6 +27,7 @@ struct FSpawnedClasses
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<int32> SpawnedAmount; //SpawnedAmount[i] is the number spawned of for team i
 };
 
@@ -45,6 +48,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Replicated, BlueprintReadWrite)
 	TArray<FSpawnedClasses> SpawnedClasses;
+
+	UPROPERTY(EditAnywhere, Replicated, BlueprintReadWrite)
+	TArray<ASpawnPoint*> SpawnPoints;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

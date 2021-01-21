@@ -11,6 +11,7 @@ void ASMLGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	DOREPLIFETIME_CONDITION(ASMLGameState, SpawnableClasses, COND_InitialOnly);
 	DOREPLIFETIME_CONDITION(ASMLGameState, NumTeams, COND_InitialOnly);
 	DOREPLIFETIME(ASMLGameState, SpawnedClasses);
+	DOREPLIFETIME(ASMLGameState, SpawnPoints);
 }
 
 TArray<FSpawnableClass> ASMLGameState::GetSpawnableClasses(int32 TeamIndex)

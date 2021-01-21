@@ -6,6 +6,7 @@
 #include "CraftScale.h"
 #include "DamageableCharacter.h"
 #include "GeneratedCodeHelpers.h"
+#include "SMLGameState.h"
 #include "Components/SphereComponent.h"
 #include "Components/CapsuleComponent.h"
 
@@ -22,11 +23,34 @@ ASpawnPoint::ASpawnPoint(const FObjectInitializer& ObjectInitializer)
 	SetActorTickEnabled(false);
 	SetActorTickInterval(0.1);
 	SetReplicates(true);
+	bAlwaysRelevant = true;
 }
 
 void ASpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
+	if (GetWorld()->IsServer())
+	{
+		ASMLGameState* GS = GetWorld()->GetGameState<ASMLGameState>();
+        if(GS)
+        {
+        	GS->SpawnPoints.AddUnique(this);
+        }
+	}
+	
+}
+
+void ASpawnPoint::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (GetWorld()->IsServer())
+	{
+		ASMLGameState* GS = GetWorld()->GetGameState<ASMLGameState>();
+		if(GS)
+		{
+			GS->SpawnPoints.Remove(this);
+		}
+	}
+	Super::EndPlay(EndPlayReason);
 }
 
 void ASpawnPoint::Tick(float DeltaSeconds)

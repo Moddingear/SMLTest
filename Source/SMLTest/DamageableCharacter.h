@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+
 #include "GameFramework/Character.h"
 #include "DamageableCharacter.generated.h"
 
@@ -18,17 +19,26 @@ public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 	float Health;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float MaxHealth;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float RespawnDelay;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	ECraftScale CraftScale;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated)
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Replicated)
 	int32 Team;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UTexture2D* ClassIcon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FText ClassName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FText ClassDescription;
 	
 	// Sets default values for this character's properties
 	ADamageableCharacter();

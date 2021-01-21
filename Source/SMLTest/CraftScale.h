@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "CraftScale.generated.h"
 /**
  * 
  */
@@ -15,4 +15,14 @@ enum class ECraftScale : uint8
     Medium = 2,
     Large = 3,
     Max = 4,
+};
+
+UCLASS()
+class SMLTEST_API UCraftScaleLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintPure)
+	static FText GetCraftScaleName(ECraftScale InScale);
 };
