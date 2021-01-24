@@ -69,7 +69,7 @@ void ASpawnPoint::Tick(float DeltaSeconds)
 void ASpawnPoint::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION(ASpawnPoint, Team, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(ASpawnPoint, Team, COND_None);
 	DOREPLIFETIME(ASpawnPoint, SpawnedActor);
 }
 

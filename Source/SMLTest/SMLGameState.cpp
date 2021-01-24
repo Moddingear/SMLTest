@@ -4,6 +4,19 @@
 #include "SMLGameState.h"
 
 #include "GeneratedCodeHelpers.h"
+#include "SpawnPoint.h"
+#include "Chaos/AABB.h"
+#include "Chaos/AABB.h"
+
+void ASMLGameState::BeginPlay()
+{
+	Super::BeginPlay();
+	SpawnedClasses.SetNum(SpawnableClasses.Num());
+	for (int i = 0; i < SpawnableClasses.Num(); ++i)
+	{
+		SpawnedClasses[i].SpawnedAmount.SetNumZeroed(NumTeams);
+	}
+}
 
 void ASMLGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -28,4 +41,49 @@ TArray<FSpawnableClass> ASMLGameState::GetSpawnableClasses(int32 TeamIndex)
 		}
 	}
 	return Available;
+}
+
+TArray<FSpawnableTeam> ASMLGameState::GetSpawnableTeams()
+{
+	TArray<FSpawnableTeam> Teams; Teams.SetNum(NumTeams);
+	for (int TeamIndex = 0; TeamIndex < NumTeams; ++TeamIndex)
+	{
+		Teams[TeamIndex].TeamIndex = TeamIndex;
+		switch (TeamIndex)
+		{
+			case 0:
+				Teams[TeamIndex].TeamName = NSLOCTEXT("Teams", "0", "Red");
+				break;
+			case 1:
+				Teams[TeamIndex].TeamName = NSLOCTEXT("Teams", "1", "Grn");
+				break;
+			case 2:
+				Teams[TeamIndex].TeamName = NSLOCTEXT("Teams", "2", "Blu");
+				break;
+		default:
+			Teams[TeamIndex].TeamName = FText::FormatNamed(NSLOCTEXT("Teams", "Other", "Team {num}"), TEXT("num"), TeamIndex);
+			break;
+		}
+	}
+	for (FSpawnedClasses SpawnedClass : SpawnedClasses)
+	{
+		for (int i = 0; i < FMath::Min(SpawnedClass.SpawnedAmount.Num(), Teams.Num()); ++i)
+		{
+			Teams[i].NumPlayers += SpawnedClass.SpawnedAmount[i];
+		}
+	}
+	return Teams;
+}
+
+TArray<ASpawnPoint*> ASMLGameState::GetSpawnPoints(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class)
+{
+	TArray<ASpawnPoint*> Spawnable;
+	for (ASpawnPoint* SpawnPoint : SpawnPoints)
+	{
+		if(SpawnPoint->CanClassSpawnHere(Class) && SpawnPoint->Team == TeamIndex)
+		{
+			Spawnable.Add(SpawnPoint);
+		}
+	}
+	return Spawnable;
 }

@@ -23,16 +23,24 @@ class SMLTEST_API ASpawnPoint : public APlayerStart
 	GENERATED_BODY()
 public:
 	ASpawnPoint(const FObjectInitializer& ObjectInitializer);
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
-	int32 Team;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+
+private:
+	UPROPERTY(EditAnywhere)
 	ECraftScale MaxSpawnableScale;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
+	UPROPERTY(EditAnywhere, Replicated)
 	ADamageableCharacter* SpawnedActor;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(EditAnywhere)
 	float FreeRadius; //Distance the last spawned character has to go before freeing the spawn point
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
+	int32 Team;
+
+	ADamageableCharacter* GetSpawnedActor() const
+	{
+		return SpawnedActor;
+	}
 	
 	FSpawnNotifyDelegate OnSpawn;
 
