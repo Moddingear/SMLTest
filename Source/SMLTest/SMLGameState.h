@@ -113,6 +113,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual TArray<FSpawnableTeam> GetSpawnableTeams();
 
+	UFUNCTION(BlueprintCallable)
 	virtual TArray<ASpawnPoint*> GetSpawnPoints(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class);
 
 	friend ASpawnPoint;

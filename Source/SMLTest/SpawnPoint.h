@@ -25,18 +25,30 @@ public:
 	ASpawnPoint(const FObjectInitializer& ObjectInitializer);
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintGetter=GetMaxSpawnableScale)
 	ECraftScale MaxSpawnableScale;
-
-	UPROPERTY(EditAnywhere, Replicated)
+	
+	UPROPERTY(EditAnywhere, Replicated, BlueprintGetter=GetSpawnedActor)
 	ADamageableCharacter* SpawnedActor;
 	UPROPERTY(EditAnywhere)
 	float FreeRadius; //Distance the last spawned character has to go before freeing the spawn point
 
 public:
+	UPROPERTY(BlueprintReadOnly, Replicated)
+	int64 OwnerIndex;
+	UPROPERTY(BlueprintReadOnly, Replicated)
+	TSubclassOf<ADamageableCharacter> OwnerClass;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
 	int32 Team;
 
+	UFUNCTION(BlueprintPure)
+	ECraftScale GetMaxSpawnableScale() const
+	{
+		return MaxSpawnableScale;
+	}
+	
+	UFUNCTION(BlueprintPure)
 	ADamageableCharacter* GetSpawnedActor() const
 	{
 		return SpawnedActor;
@@ -45,6 +57,8 @@ public:
 	FSpawnNotifyDelegate OnSpawn;
 
 protected:
+	virtual void OnConstruction(const FTransform& Transform) override;
+	
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -54,8 +68,10 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	UFUNCTION(BlueprintPure)
 	bool CanClassSpawnHere(TSubclassOf<ADamageableCharacter> Class) const;
 
+	UFUNCTION(BlueprintPure)
 	bool CanSpawn(TSubclassOf<ADamageableCharacter> Class) const;
 
 	void NotifySpawn(ADamageableCharacter* InSpawnedActor);

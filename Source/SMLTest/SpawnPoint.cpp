@@ -7,6 +7,7 @@
 #include "DamageableCharacter.h"
 #include "GeneratedCodeHelpers.h"
 #include "SMLGameState.h"
+#include "SMLTest.h"
 #include "Components/SphereComponent.h"
 #include "Components/CapsuleComponent.h"
 
@@ -26,6 +27,20 @@ ASpawnPoint::ASpawnPoint(const FObjectInitializer& ObjectInitializer)
 	bAlwaysRelevant = true;
 }
 
+void ASpawnPoint::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	if(GetWorld()->IsServer())
+	{
+		ADamageableCharacter* Parent = Cast<ADamageableCharacter>(GetOwner());
+		if(Parent)
+		{
+			OwnerClass = Parent->GetClass();
+			OwnerIndex = reinterpret_cast<int64>(Parent);
+		}
+	}
+}
+
 void ASpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
@@ -37,7 +52,7 @@ void ASpawnPoint::BeginPlay()
         	GS->SpawnPoints.AddUnique(this);
         }
 	}
-	
+	//UE_LOG(LogSML, Log, TEXT("Class : %s, Index : %ld"), *OwnerClass->GetName(), OwnerIndex);
 }
 
 void ASpawnPoint::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -71,6 +86,8 @@ void ASpawnPoint::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION(ASpawnPoint, Team, COND_None);
 	DOREPLIFETIME(ASpawnPoint, SpawnedActor);
+	DOREPLIFETIME_CONDITION(ASpawnPoint, OwnerIndex, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(ASpawnPoint, OwnerClass, COND_InitialOnly);
 }
 
 bool ASpawnPoint::CanClassSpawnHere(const TSubclassOf<ADamageableCharacter> Class) const

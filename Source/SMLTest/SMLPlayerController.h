@@ -7,6 +7,7 @@
 #include "SMLPlayerController.generated.h"
 
 class ASpawnPoint;
+class ADamageableCharacter;
 /**
  * 
  */
@@ -21,6 +22,15 @@ protected:
 public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 LastTeam;
+
+	UPROPERTY(BlueprintReadOnly)
+	TSubclassOf<ADamageableCharacter> LastClass;
+
+	UPROPERTY(BlueprintReadOnly)
+	ASpawnPoint* LastSpawnPoint;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float DeathTime;
@@ -48,7 +58,13 @@ public:
 	void CloseRespawnMenu();
 	virtual void CloseRespawnMenu_Implementation();
 
-	UFUNCTION(Server, BlueprintCallable, Reliable, WithValidation)
+	UFUNCTION(BlueprintPure)
+	float GetTimeUntilRespawn(TSubclassOf<class ADamageableCharacter> Class);
+
+	UFUNCTION(BlueprintCallable)
+	void RespawnAndRemember(TSubclassOf<class ADamageableCharacter> Class, int32 Team, ASpawnPoint* SpawnPoint);
+
+	UFUNCTION(Server, Reliable, WithValidation)
 	void AskRespawn(TSubclassOf<class ADamageableCharacter> Class, int32 Team, ASpawnPoint* SpawnPoint);
 	
 };

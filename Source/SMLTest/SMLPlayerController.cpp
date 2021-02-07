@@ -21,11 +21,11 @@ void ASMLPlayerController::OnPossess(APawn* InPawn)
 
 void ASMLPlayerController::OnUnPossess()
 {
-	Super::OnUnPossess();
 	if (IsLocalController())
-	{
-		OpenRespawnMenu();
-	}
+ 	{
+ 		OpenRespawnMenu();
+ 	}
+	Super::OnUnPossess();
 }
 
 void ASMLPlayerController::SetupInputComponent()
@@ -65,6 +65,25 @@ void ASMLPlayerController::CloseRespawnMenu_Implementation()
 {
 }
 
+float ASMLPlayerController::GetTimeUntilRespawn(TSubclassOf<ADamageableCharacter> Class)
+{
+	if (IsValid(Class))
+	{
+		ADamageableCharacter* DefaultObject = Class->GetDefaultObject<ADamageableCharacter>();
+        return DeathTime + DefaultObject->RespawnDelay - UKismetSystemLibrary::GetGameTimeInSeconds(this);
+	}
+	return 0;
+}
+
+void ASMLPlayerController::RespawnAndRemember(TSubclassOf<ADamageableCharacter> Class, int32 Team,
+                                              ASpawnPoint* SpawnPoint)
+{
+	LastClass = Class;
+	LastTeam = Team;
+	LastSpawnPoint = SpawnPoint;
+	AskRespawn(Class, Team, SpawnPoint);
+}
+
 void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableCharacter> Class, int32 Team, ASpawnPoint* SpawnPoint)
 {
 	ASMLGameState* GS = GetWorld()->GetGameState<ASMLGameState>();
@@ -79,7 +98,7 @@ void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableChar
 				//do respawn, remove one
 				//return
 				ADamageableCharacter* DefaultObject = Class->GetDefaultObject<ADamageableCharacter>();
-				if(UKismetSystemLibrary::GetGameTimeInSeconds(this) + DefaultObject->RespawnDelay > DeathTime)
+				if(GetTimeUntilRespawn(Class) <= 0)
 				{
 					if(DefaultObject->CraftScale == ECraftScale::Max || DefaultObject->CraftScale == ECraftScale::None)
 					{
@@ -102,6 +121,5 @@ void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableChar
 
 bool ASMLPlayerController::AskRespawn_Validate(TSubclassOf<ADamageableCharacter> Class, int32 Team, ASpawnPoint*)
 {
-    
 	return true;
 }
