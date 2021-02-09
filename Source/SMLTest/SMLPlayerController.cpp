@@ -7,12 +7,17 @@
 #include "DamageableCharacter.h"
 #include "SMLGameState.h"
 #include "SMLTest.h"
-#include "SpawnPoint.h"
+#include "RespawnPoint.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 void ASMLPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+	OnPossessOwner(InPawn);
+}
+
+void ASMLPlayerController::OnPossessOwner_Implementation(APawn* InPawn)
+{
 	if (IsLocalController())
 	{
 		CloseRespawnMenu();
@@ -76,7 +81,7 @@ float ASMLPlayerController::GetTimeUntilRespawn(TSubclassOf<ADamageableCharacter
 }
 
 void ASMLPlayerController::RespawnAndRemember(TSubclassOf<ADamageableCharacter> Class, int32 Team,
-                                              ASpawnPoint* SpawnPoint)
+                                              ARespawnPoint* SpawnPoint)
 {
 	LastClass = Class;
 	LastTeam = Team;
@@ -84,7 +89,7 @@ void ASMLPlayerController::RespawnAndRemember(TSubclassOf<ADamageableCharacter> 
 	AskRespawn(Class, Team, SpawnPoint);
 }
 
-void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableCharacter> Class, int32 Team, ASpawnPoint* SpawnPoint)
+void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableCharacter> Class, int32 Team, ARespawnPoint* SpawnPoint)
 {
 	ASMLGameState* GS = GetWorld()->GetGameState<ASMLGameState>();
 	if (GS && SpawnPoint->Team == Team && GetPawn() == nullptr)
@@ -110,6 +115,7 @@ void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableChar
 						NewCharacter->Team = Team;
 						NewCharacter->FinishSpawning(SpawnPoint->GetTransform());
 						Possess(NewCharacter);
+						SpawnPoint->NotifySpawn(NewCharacter);
 					}
 					return;
 				}
@@ -119,7 +125,7 @@ void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableChar
 	}
 }
 
-bool ASMLPlayerController::AskRespawn_Validate(TSubclassOf<ADamageableCharacter> Class, int32 Team, ASpawnPoint*)
+bool ASMLPlayerController::AskRespawn_Validate(TSubclassOf<ADamageableCharacter> Class, int32 Team, ARespawnPoint*)
 {
 	return true;
 }

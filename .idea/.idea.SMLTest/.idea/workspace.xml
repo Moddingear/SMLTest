@@ -9,16 +9,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47935d0a-0147-4f53-83e0-5577950f1b8e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMLTest/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/RespawnMenu.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/RespawnMenu.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/RespawnMenuWidgets/RespawnMenuSpawnPoint.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/RespawnMenuWidgets/RespawnMenuSpawnPoint.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/RespawnMenuWidgets/RespawnMenuSpawnPointData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/RespawnMenuWidgets/RespawnMenuSpawnPointData.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/SMLPlayerControllerBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/SMLPlayerControllerBP.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/DroneDJI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DroneDJI.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/DroneGun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DroneGun.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/map0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/map0.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SMLGameState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SMLGameState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/SMLGameState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SMLGameState.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/SMLPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SMLPlayerController.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SMLTest/SMLPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SMLPlayerController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/RespawnPoint.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SMLTest/RespawnPoint.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,14 +40,19 @@
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Components/CapsuleComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SMLTest/Projectile.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Engine/EngineTypes.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Engine/NavigationObjectBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Components/Image.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/Controller.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Controller.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SMLTest/RespawnPoint.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Components/ListView.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SMLTest/RespawnPoint.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/NavigationObjectBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/PlayerStart.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Private/Components/PanelWidget.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -48,6 +60,7 @@
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Private/Components/ListView.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Components/VerticalBoxSlot.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/Pawn.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Private/Components/VerticalBox.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerStart.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.inl" root0="FORCE_HIGHLIGHTING" />
@@ -62,9 +75,13 @@
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Public/Net/UnrealNetwork.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/SlateCore/Public/Styling/SlateBrush.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/UnrealEngine.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Private/Actor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Components/SphereComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/AI/Navigation/NavAgentInterface.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerController.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Epic Games/UE_4.25/Engine/Source/Runtime/AIModule/Private/AIController.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SMLTest/Projectile.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -77,21 +94,23 @@
       <option value="$PROJECT_DIR$/Source/SMLTest/ConeGun.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/ConeGun.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/ThetaPhiGun.h" />
-      <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/Projectile.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/Projectile.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.cpp" />
-      <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/CraftScale.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/CraftScale.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLTest.Build.cs" />
       <option value="$PROJECT_DIR$/Source/SMLTest/DamageableCharacter.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLGameState.cpp" />
-      <option value="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.cpp" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLGameState.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLPlayerController.h" />
-      <option value="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.h" />
       <option value="$PROJECT_DIR$/Source/SMLTest/SMLPlayerController.cpp" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.h" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/SpawnPoint.cpp" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.h" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/RespawnPoint.cpp" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/RespawnPoint.h" />
+      <option value="$PROJECT_DIR$/Source/SMLTest/ShootableGun.cpp" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1mfRjGtU73ZXXuMlZ52D8SIe5Rq" />
@@ -354,6 +373,13 @@
       <workItem from="1612365475379" duration="5859000" />
       <workItem from="1612463742814" duration="1859000" />
       <workItem from="1612688021326" duration="3486000" />
+      <workItem from="1612698114976" duration="2939000" />
+      <workItem from="1612701564968" duration="1296000" />
+      <workItem from="1612800740803" duration="1254000" />
+      <workItem from="1612802202307" duration="1612000" />
+      <workItem from="1612811081486" duration="1409000" />
+      <workItem from="1612814665176" duration="426000" />
+      <workItem from="1612873771431" duration="2411000" />
     </task>
     <servers />
   </component>

@@ -4,7 +4,7 @@
 #include "SMLGameState.h"
 
 #include "GeneratedCodeHelpers.h"
-#include "SpawnPoint.h"
+#include "RespawnPoint.h"
 #include "Chaos/AABB.h"
 #include "Chaos/AABB.h"
 
@@ -75,10 +75,10 @@ TArray<FSpawnableTeam> ASMLGameState::GetSpawnableTeams()
 	return Teams;
 }
 
-TArray<ASpawnPoint*> ASMLGameState::GetSpawnPoints(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class)
+TArray<ARespawnPoint*> ASMLGameState::GetSpawnPoints(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class)
 {
-	TArray<ASpawnPoint*> Spawnable;
-	for (ASpawnPoint* SpawnPoint : SpawnPoints)
+	TArray<ARespawnPoint*> Spawnable;
+	for (ARespawnPoint* SpawnPoint : SpawnPoints)
 	{
 		if(SpawnPoint->CanClassSpawnHere(Class) && SpawnPoint->Team == TeamIndex)
 		{

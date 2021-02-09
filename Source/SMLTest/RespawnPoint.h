@@ -4,25 +4,24 @@
 
 #include "CoreMinimal.h"
 
-
-#include "GameFramework/PlayerStart.h"
-#include "SpawnPoint.generated.h"
+#include "GameFramework/Actor.h"
+#include "RespawnPoint.generated.h"
 
 enum class ECraftScale : uint8;
 class ADamageableCharacter;
-class ASpawnPoint;
+class ARespawnPoint;
 
-DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE(FSpawnNotifyDelegate, ASpawnPoint, OnSpawn);
-
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE(FSpawnNotifyDelegate, ARespawnPoint, OnSpawn);
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE(FSpawnEmptiedNotifyDelegate, ARespawnPoint, OnEmptied);
 /**
  * 
  */
 UCLASS(BlueprintType, Blueprintable)
-class SMLTEST_API ASpawnPoint : public APlayerStart
+class SMLTEST_API ARespawnPoint : public AActor
 {
 	GENERATED_BODY()
 public:
-	ASpawnPoint(const FObjectInitializer& ObjectInitializer);
+	ARespawnPoint();
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetMaxSpawnableScale)
@@ -55,6 +54,7 @@ public:
 	}
 	
 	FSpawnNotifyDelegate OnSpawn;
+	FSpawnEmptiedNotifyDelegate OnEmptied;
 
 protected:
 	virtual void OnConstruction(const FTransform& Transform) override;
@@ -64,7 +64,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 public:
-	virtual void Tick(float DeltaSeconds) override;
+	virtual void Tick(float DeltaTime) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

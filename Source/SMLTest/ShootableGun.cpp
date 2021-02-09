@@ -27,7 +27,7 @@ AShootableGun::AShootableGun()
 	
 	SetReplicates(true);
 	SetReplicatingMovement(true);
-	bNetUseOwnerRelevancy = true;
+	//bNetUseOwnerRelevancy = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BaseMeshHelper(TEXT("StaticMesh'/Game/drone/DroneGunBase.DroneGunBase'"));
 	if(BaseMeshHelper.Succeeded())
@@ -162,13 +162,13 @@ void AShootableGun::Fire(FVector WorldLocation)
             	if(Hits.Num() > 0)
             	{
             		float StartDistance = Hits[0].Distance;
+            		FiringEnd = Hits[0].Location + MaxDistanceAfterPenetration * FiringRotation.GetForwardVector();
             		for (FHitResult Hit : Hits)
             		{
             			//UE_LOG(LogTemp, Log, TEXT("Hit %s, distance %f < MaxDistance %f"), *Hit.GetActor()->GetName(), Hit.Distance, StartDistance + MaxDistanceAfterPenetration)
             			if (Hit.Distance <= StartDistance + MaxDistanceAfterPenetration)
             			{
             				ActorsHit.AddUnique(Hit.GetActor());
-            				FiringEnd = Hit.Location;
             				//DrawDebugPoint(GetWorld(), Hit.Location, 1, FColor::Green, false, 5);
             			}
             		}
@@ -235,7 +235,7 @@ void AShootableGun::RegisterLineTraceHit_Implementation(const TArray<AActor*>& H
 		//UE_LOG(LogTemp, Log, TEXT("%s was hit"), *Hit[i]->GetName());
 		Hit[i]->TakeDamage(Damage, FDamageEvent(), DamageInstigator, this);
 	}
-	PlayFiringAnimation(StartLocation, EndLocation);
+	PlayFiringAnimationServer(StartLocation, EndLocation);
 }
 
 bool AShootableGun::RegisterLineTraceHit_Validate(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation)

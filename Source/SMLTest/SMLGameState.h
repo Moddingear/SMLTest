@@ -8,7 +8,7 @@
 #include "SMLGameState.generated.h"
 
 enum class ECraftScale : uint8;
-class ASpawnPoint;
+class ARespawnPoint;
 class ADamageableCharacter;
 
 USTRUCT(BlueprintType)
@@ -91,7 +91,7 @@ private:
 
 protected:
 	UPROPERTY(EditAnywhere, Replicated)
-	TArray<ASpawnPoint*> SpawnPoints; //This array automatically get populated server by the spawn points
+	TArray<ARespawnPoint*> SpawnPoints; //This array automatically get populated server by the spawn points
 	
 public:
 	UFUNCTION(BlueprintPure)
@@ -114,7 +114,7 @@ public:
 	virtual TArray<FSpawnableTeam> GetSpawnableTeams();
 
 	UFUNCTION(BlueprintCallable)
-	virtual TArray<ASpawnPoint*> GetSpawnPoints(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class);
+	virtual TArray<ARespawnPoint*> GetSpawnPoints(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class);
 
-	friend ASpawnPoint;
+	friend ARespawnPoint;
 };

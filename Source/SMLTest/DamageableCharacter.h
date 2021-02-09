@@ -8,7 +8,7 @@
 #include "GameFramework/Character.h"
 #include "DamageableCharacter.generated.h"
 
-class ASpawnPoint;
+class ARespawnPoint;
 enum class ECraftScale : uint8;
 UCLASS(BlueprintType, Blueprintable)
 class SMLTEST_API ADamageableCharacter : public ACharacter
