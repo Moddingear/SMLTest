@@ -20,6 +20,8 @@ protected:
 	virtual void SetupInputComponent() override;
 	
 public:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	virtual void OnPossess(APawn* InPawn) override;
 
 	UFUNCTION(Client, Reliable)
@@ -27,13 +29,13 @@ public:
 	
 	virtual void OnUnPossess() override;
 
-	UPROPERTY(BlueprintReadOnly)
-	int32 LastTeam;
+	UPROPERTY(BlueprintReadOnly, Replicated)
+	int32 Team; //Used for damage and for selecting at respawn
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Replicated)
 	TSubclassOf<ADamageableCharacter> LastClass;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Replicated)
 	ARespawnPoint* LastSpawnPoint;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -66,9 +68,9 @@ public:
 	float GetTimeUntilRespawn(TSubclassOf<class ADamageableCharacter> Class);
 
 	UFUNCTION(BlueprintCallable)
-	void RespawnAndRemember(TSubclassOf<class ADamageableCharacter> Class, int32 Team, ARespawnPoint* SpawnPoint);
+	void RespawnAndRemember(TSubclassOf<class ADamageableCharacter> Class, int32 InTeam, ARespawnPoint* SpawnPoint);
 
 	UFUNCTION(Server, Reliable, WithValidation)
-	void AskRespawn(TSubclassOf<class ADamageableCharacter> Class, int32 Team, ARespawnPoint* SpawnPoint);
+	void AskRespawn(TSubclassOf<class ADamageableCharacter> Class, int32 InTeam, ARespawnPoint* SpawnPoint);
 	
 };

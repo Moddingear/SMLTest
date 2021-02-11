@@ -6,8 +6,6 @@
 
 
 #include "SMLTest.h"
-#include "Chaos/AABB.h"
-#include "Chaos/AABB.h"
 
 void AProjectile::InitializeProjectile(FVector Velocity, float InDamage, float Lifespan, TArray<AActor*>& InIgnoreList, bool bVisibleToOwner)
 {
@@ -20,7 +18,6 @@ void AProjectile::InitializeProjectile(FVector Velocity, float InDamage, float L
 	{
 		ProjectileMeshComponent->IgnoreActorWhenMoving(Actor, true);
 	}
-	
 }
 
 // Sets default values

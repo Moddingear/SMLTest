@@ -5,8 +5,7 @@
 
 #include "GeneratedCodeHelpers.h"
 #include "RespawnPoint.h"
-#include "Chaos/AABB.h"
-#include "Chaos/AABB.h"
+#include "DamageableCharacter.h"
 
 void ASMLGameState::BeginPlay()
 {
@@ -86,4 +85,86 @@ TArray<ARespawnPoint*> ASMLGameState::GetSpawnPoints(int32 TeamIndex, TSubclassO
 		}
 	}
 	return Spawnable;
+}
+
+bool ASMLGameState::CanSpawn(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class)
+{
+	if(!SpawnedClasses.IsValidIndex(TeamIndex))
+	{
+		SpawnedClasses.SetNum(NumTeams);
+	}
+	bool HasFound = false;
+	int32 ClassIndex;
+	for (ClassIndex = 0; ClassIndex < SpawnableClasses.Num(); ++ClassIndex)
+	{
+		FSpawnableClass SpawnableClass = SpawnableClasses[ClassIndex];
+		if (SpawnableClass.Class == Class)
+		{
+			HasFound = true;
+			break;
+		}	
+	}
+	if (HasFound)
+	{
+		if (!SpawnedClasses[TeamIndex].SpawnedAmount.IsValidIndex(ClassIndex))
+		{
+			SpawnedClasses[TeamIndex].SpawnedAmount.SetNum(SpawnableClasses.Num());
+		}
+		return SpawnedClasses[TeamIndex].SpawnedAmount[ClassIndex] < SpawnableClasses[ClassIndex].Count;
+	}
+	return false;
+}
+
+void ASMLGameState::RegisterSpawned(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class)
+{
+	if(!SpawnedClasses.IsValidIndex(TeamIndex))
+	{
+		SpawnedClasses.SetNum(NumTeams);
+	}
+	bool HasFound = false;
+	int32 ClassIndex;
+	for (ClassIndex = 0; ClassIndex < SpawnableClasses.Num(); ++ClassIndex)
+	{
+		FSpawnableClass SpawnableClass = SpawnableClasses[ClassIndex];
+		if (SpawnableClass.Class == Class)
+		{
+			HasFound = true;
+			break;
+		}	
+	}
+	if (HasFound)
+	{
+		if (!SpawnedClasses[TeamIndex].SpawnedAmount.IsValidIndex(ClassIndex))
+		{
+			SpawnedClasses[TeamIndex].SpawnedAmount.SetNum(SpawnableClasses.Num());
+		}
+		SpawnedClasses[TeamIndex].SpawnedAmount[ClassIndex] += 1;
+	}
+}
+
+void ASMLGameState::UnregisterSpawned(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class)
+{
+	if(!SpawnedClasses.IsValidIndex(TeamIndex))
+	{
+		SpawnedClasses.SetNum(NumTeams);
+	}
+	bool HasFound = false;
+	int32 ClassIndex;
+	for (ClassIndex = 0; ClassIndex < SpawnableClasses.Num(); ++ClassIndex)
+	{
+		FSpawnableClass SpawnableClass = SpawnableClasses[ClassIndex];
+		if (SpawnableClass.Class == Class)
+		{
+			HasFound = true;
+			break;
+		}	
+	}
+	if (HasFound)
+	{
+		if (!SpawnedClasses[TeamIndex].SpawnedAmount.IsValidIndex(ClassIndex))
+		{
+			SpawnedClasses[TeamIndex].SpawnedAmount.SetNum(SpawnableClasses.Num());
+		}
+		SpawnedClasses[TeamIndex].SpawnedAmount[ClassIndex] = FMath::Max(SpawnedClasses[TeamIndex].SpawnedAmount[ClassIndex] - 1, 0);
+	}
 }

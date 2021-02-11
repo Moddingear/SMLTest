@@ -5,6 +5,7 @@
 
 #include "CraftScale.h"
 #include "DamageableCharacter.h"
+#include "GeneratedCodeHelpers.h"
 #include "SMLGameState.h"
 #include "SMLTest.h"
 #include "RespawnPoint.h"
@@ -28,8 +29,19 @@ void ASMLPlayerController::OnUnPossess()
 {
 	if (IsLocalController())
  	{
- 		OpenRespawnMenu();
+		if(!GetWorld()->IsPendingKill())
+		{
+			OpenRespawnMenu();
+		}
  	}
+	if(GetWorld()->IsServer())
+	{
+		ASMLGameState* GS = GetWorld()->GetGameState<ASMLGameState>();
+		if (GS)
+		{
+			GS->UnregisterSpawned(Team, LastClass);
+		}
+	}
 	Super::OnUnPossess();
 }
 
@@ -37,6 +49,14 @@ void ASMLPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	InputComponent->BindAction("Menu", IE_Pressed, this, &ASMLPlayerController::InputMenuPressed);
+}
+
+void ASMLPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ASMLPlayerController, Team);
+	DOREPLIFETIME(ASMLPlayerController, LastClass);
+	DOREPLIFETIME(ASMLPlayerController, LastSpawnPoint);
 }
 
 void ASMLPlayerController::InputMenuPressed_Implementation()
@@ -80,52 +100,72 @@ float ASMLPlayerController::GetTimeUntilRespawn(TSubclassOf<ADamageableCharacter
 	return 0;
 }
 
-void ASMLPlayerController::RespawnAndRemember(TSubclassOf<ADamageableCharacter> Class, int32 Team,
-                                              ARespawnPoint* SpawnPoint)
+void ASMLPlayerController::RespawnAndRemember(TSubclassOf<ADamageableCharacter> Class, int32 InTeam,
+	ARespawnPoint* SpawnPoint)
 {
-	LastClass = Class;
-	LastTeam = Team;
-	LastSpawnPoint = SpawnPoint;
-	AskRespawn(Class, Team, SpawnPoint);
+	//LastClass = Class;
+	//Team = InTeam;
+	//LastSpawnPoint = SpawnPoint;
+	AskRespawn(Class, InTeam, SpawnPoint);
 }
 
-void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableCharacter> Class, int32 Team, ARespawnPoint* SpawnPoint)
+void ASMLPlayerController::AskRespawn_Implementation(TSubclassOf<ADamageableCharacter> Class, int32 InTeam, ARespawnPoint* SpawnPoint)
 {
 	ASMLGameState* GS = GetWorld()->GetGameState<ASMLGameState>();
-	if (GS && SpawnPoint->Team == Team && GetPawn() == nullptr)
+	if (IsValid(Class) && IsValid(SpawnPoint))
 	{
-		
-		TArray<FSpawnableClass> SpawnableClasses = GS->GetSpawnableClasses(Team);
-		for (FSpawnableClass SpawnableClass : SpawnableClasses)
+		if (GS && SpawnPoint->Team == InTeam && GetPawn() == nullptr)
 		{
-			if (SpawnableClass.Class == Class)
+		
+			TArray<FSpawnableClass> SpawnableClasses = GS->GetSpawnableClasses(Team);
+			if(GS->CanSpawn(InTeam, Class))
 			{
-				//do respawn, remove one
-				//return
-				ADamageableCharacter* DefaultObject = Class->GetDefaultObject<ADamageableCharacter>();
-				if(GetTimeUntilRespawn(Class) <= 0)
+				for (FSpawnableClass SpawnableClass : SpawnableClasses)
 				{
-					if(DefaultObject->CraftScale == ECraftScale::Max || DefaultObject->CraftScale == ECraftScale::None)
+					if (SpawnableClass.Class == Class)
 					{
-						UE_LOG(LogSML, Error, TEXT("Class %s has an invalid craft scale : %d"), *Class->GetName(), DefaultObject->CraftScale);
-					}
-					if(SpawnPoint->CanSpawn(Class))
-					{
-						ADamageableCharacter* NewCharacter = GetWorld()->SpawnActorDeferred<ADamageableCharacter>(Class, SpawnPoint->GetTransform(), this, nullptr);
-						NewCharacter->Team = Team;
-						NewCharacter->FinishSpawning(SpawnPoint->GetTransform());
-						Possess(NewCharacter);
-						SpawnPoint->NotifySpawn(NewCharacter);
-					}
-					return;
-				}
+						//do respawn, remove one
+						//return
+						ADamageableCharacter* DefaultObject = Class->GetDefaultObject<ADamageableCharacter>();
+						if(GetTimeUntilRespawn(Class) <= 0)
+						{
+							if(DefaultObject->CraftScale == ECraftScale::Max || DefaultObject->CraftScale == ECraftScale::None)
+							{
+								UE_LOG(LogSML, Error, TEXT("Class %s has an invalid craft scale : %d"), *Class->GetName(), DefaultObject->CraftScale);
+							}
+							if(SpawnPoint->CanSpawn(Class))
+							{
+								ADamageableCharacter* NewCharacter = GetWorld()->SpawnActorDeferred<ADamageableCharacter>(Class, SpawnPoint->GetTransform(), this, nullptr);
+								NewCharacter->Team = Team;
+								NewCharacter->FinishSpawning(SpawnPoint->GetTransform());
+								Possess(NewCharacter);
+								SpawnPoint->NotifySpawn(NewCharacter);
+							}
+							LastClass = Class;
+							Team = InTeam;
+							LastSpawnPoint = SpawnPoint;
+							GS->RegisterSpawned(InTeam, Class);
+							return;
+						}
 				
+					}
+				}
 			}
 		}
+		else
+		{
+			UE_LOG(LogSML, Warning, TEXT("[ASMLPlayerController::AskRespawn_Implementation] Failed check 2 : GS is %s, SpawnPoint->Team = %d, Team = %d, GetPawn is %s"),
+                IsValid(GS) ? TEXT("VALID") : TEXT("INVALID"), SpawnPoint->Team, Team, IsValid(GetPawn()) ? TEXT("VALID") : TEXT("INVALID"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogSML, Warning, TEXT("[ASMLPlayerController::AskRespawn_Implementation] Failed check 1 : Class is %s, SpawnPoint is %s"),
+            IsValid(Class) ? TEXT("VALID") : TEXT("INVALID"), IsValid(SpawnPoint) ? TEXT("VALID") : TEXT("INVALID"));
 	}
 }
 
-bool ASMLPlayerController::AskRespawn_Validate(TSubclassOf<ADamageableCharacter> Class, int32 Team, ARespawnPoint*)
+bool ASMLPlayerController::AskRespawn_Validate(TSubclassOf<ADamageableCharacter> Class, int32 InTeam, ARespawnPoint*)
 {
 	return true;
 }

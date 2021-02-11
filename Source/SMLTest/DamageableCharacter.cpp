@@ -5,6 +5,7 @@
 
 #include "CraftScale.h"
 #include "GeneratedCodeHelpers.h"
+#include "SMLPlayerController.h"
 #include "Components/CapsuleComponent.h"
 
 // Sets default values
@@ -97,6 +98,15 @@ void ADamageableCharacter::OnDeath_Implementation()
 float ADamageableCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
                                        AController* EventInstigator, AActor* DamageCauser)
 {
+	ASMLPlayerController* PCInstigator = Cast<ASMLPlayerController>(EventInstigator);
+	ASMLPlayerController* PC = GetController<ASMLPlayerController>();
+	if(IsValid(PC) && IsValid(PCInstigator))
+	{
+		if (PC->Team == PCInstigator->Team)
+		{
+			return 0; //take no damage if same team
+		}
+	}
 	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	Health -= ActualDamage;
 	if (Health <= 0)

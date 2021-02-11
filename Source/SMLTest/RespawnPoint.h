@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "RespawnPoint.generated.h"
 
+class USphereComponent;
 enum class ECraftScale : uint8;
 class ADamageableCharacter;
 class ARespawnPoint;
@@ -55,6 +56,9 @@ public:
 	
 	FSpawnNotifyDelegate OnSpawn;
 	FSpawnEmptiedNotifyDelegate OnEmptied;
+
+	UPROPERTY()
+	USphereComponent* Sphere;
 
 protected:
 	virtual void OnConstruction(const FTransform& Transform) override;

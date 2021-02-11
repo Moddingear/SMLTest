@@ -116,5 +116,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual TArray<ARespawnPoint*> GetSpawnPoints(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class);
 
+	UFUNCTION(BlueprintPure)
+	bool CanSpawn(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class);
+
+	UFUNCTION(BlueprintCallable)
+	void RegisterSpawned(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class); //Server only, called by the PlayerController
+
+	UFUNCTION(BlueprintCallable)
+	void UnregisterSpawned(int32 TeamIndex, TSubclassOf<ADamageableCharacter> Class); //Server only, called by the PlayerController
+
 	friend ARespawnPoint;
 };

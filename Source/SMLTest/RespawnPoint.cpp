@@ -9,19 +9,20 @@
 #include "SMLGameState.h"
 #include "SMLTest.h"
 #include "Components/SphereComponent.h"
-#include "Components/CapsuleComponent.h"
 
 
 ARespawnPoint::ARespawnPoint()
 {
 	MaxSpawnableScale = ECraftScale::Max;
 	FreeRadius = 1000.f;
-	USphereComponent* Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
-	Sphere->SetSphereRadius(FreeRadius);
+	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
 	Sphere->SetCollisionProfileName("NoCollision");
 	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = Sphere;
+	SetActorTickEnabled(true);
 	SetActorTickInterval(0.1);
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
 	SetReplicates(true);
 	bAlwaysRelevant = true;
 }
@@ -29,6 +30,7 @@ ARespawnPoint::ARespawnPoint()
 void ARespawnPoint::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	Sphere->SetSphereRadius(FreeRadius);
 	if(GetWorld()->IsServer())
 	{
 		ADamageableCharacter* Parent = Cast<ADamageableCharacter>(GetOwner());
@@ -36,6 +38,10 @@ void ARespawnPoint::OnConstruction(const FTransform& Transform)
 		{
 			OwnerClass = Parent->GetClass();
 			OwnerIndex = reinterpret_cast<int64>(Parent);
+		}
+		else
+		{
+			OwnerIndex = reinterpret_cast<int64>(this);
 		}
 	}
 }
@@ -70,7 +76,7 @@ void ARespawnPoint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
     //UE_LOG(LogSML, Log, TEXT("[ASpawnPoint::Tick]"));
-	if(SpawnedActor)
+	if(IsValid(SpawnedActor))
 	{
 		if(GetDistanceTo(SpawnedActor) > FreeRadius)
         {
@@ -85,6 +91,11 @@ void ARespawnPoint::Tick(float DeltaTime)
 	}
 	else
 	{
+		if (SpawnedActor != nullptr)
+		{
+			UE_LOG(LogSML, Log, TEXT("[ASpawnPoint::Tick] Freed spawn point %s from actor gone invalid"), *GetName());
+            SpawnedActor = nullptr;
+		}
 		//UE_LOG(LogSML, Log, TEXT("[ASpawnPoint::Tick] Spawn point %s has invalid spawned actor"), *GetName());
 	}
 }
@@ -100,13 +111,18 @@ void ARespawnPoint::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 
 bool ARespawnPoint::CanClassSpawnHere(const TSubclassOf<ADamageableCharacter> Class) const
 {
+	if(!IsValid(Class))
+	{
+		UE_LOG(LogSML, Warning, TEXT("[ARespawnPoint::CanClassSpawnHere] called with invalid arguments at respawn point %s"), *GetName());
+		return false;
+	}
 	ADamageableCharacter* DefaultObject = Class.GetDefaultObject();
 	return DefaultObject->CraftScale <= MaxSpawnableScale;
 }
 
 bool ARespawnPoint::CanSpawn(const TSubclassOf<ADamageableCharacter> Class) const
 {
-	return CanClassSpawnHere(Class) && SpawnedActor == nullptr;
+	return CanClassSpawnHere(Class) && !IsValid(SpawnedActor);
 }
 
 void ARespawnPoint::NotifySpawn(ADamageableCharacter* InSpawnedActor)
