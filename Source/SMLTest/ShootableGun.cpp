@@ -22,6 +22,7 @@ AShootableGun::AShootableGun()
 	MaxDistanceAfterPenetration = 0;
 	MaximumRange = 100 * 1000;
 	bShootUnaligned = false;
+	MaxHealth = 0.f;
 
 	ProjectileClass = AProjectile::StaticClass();
 	
@@ -50,6 +51,21 @@ AShootableGun::AShootableGun()
 	Gun->SetupAttachment(RootComponent);
 }
 
+void AShootableGun::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	if (!CanTakeDamage())
+	{
+		Gun->SetCollisionProfileName("NoCollision");
+		Base->SetCollisionProfileName("NoCollision");
+	}
+	else
+	{
+		Gun->SetCollisionProfileName("GunDestructible");
+		Base->SetCollisionProfileName("GunDestructible");
+	}
+}
+
 // Called when the game starts or when spawned
 void AShootableGun::BeginPlay()
 {
@@ -75,7 +91,10 @@ void AShootableGun::Tick(float DeltaTime)
 			return;
 		}
 	}
-	AimAt(Target);
+	if (!IsBroken())
+	{
+		AimAt(Target);
+	}
 }
 
 void AShootableGun::SendTarget_Implementation(const FVector NewTarget)
@@ -100,7 +119,7 @@ bool AShootableGun::IsRecharged()
 
 bool AShootableGun::CanFireAt(FVector WorldLocation)
 {
-	return IsRecharged() && (IsInRotationRange(WorldLocation) || bShootUnaligned);
+	return IsRecharged() && (IsInRotationRange(WorldLocation) || bShootUnaligned)  && !IsBroken();
 }
 
 FQuat AShootableGun::GetRotationInRange(FVector WorldLocation)
@@ -122,18 +141,22 @@ void AShootableGun::RemoveIgnoredFromLineTrace(TArray<FHitResult>& HitResults)
 
 bool AShootableGun::AimAt(FVector WorldLocation)
 {
-	Gun->SetWorldRotation(GetRotationInRange(WorldLocation));
-	if(GetOwner())
+	if (!IsBroken())
 	{
-		SendTarget(WorldLocation);
+		Gun->SetWorldRotation(GetRotationInRange(WorldLocation));
+        if(GetOwner())
+        {
+        	SendTarget(WorldLocation);
+        }
+        return IsInRotationRange(WorldLocation);
 	}
-	return IsInRotationRange(WorldLocation);
+	return false;
 }
 
 void AShootableGun::Fire(FVector WorldLocation)
 {
 	//UE_LOG(LogSML, Log, TEXT("Fire command received"))
-	if(bShootUnaligned || IsInRotationRange(WorldLocation))
+	if((bShootUnaligned || IsInRotationRange(WorldLocation)) && !IsBroken())
 	{
 		const float TimeOfFiring = UKismetSystemLibrary::GetGameTimeInSeconds(this);
 		//UE_LOG(LogSML, Log, TEXT("Is is firing cone; Time = %f, NextTimeFireable = %f"), TimeOfFiring, NextTimeFireable);
@@ -193,8 +216,11 @@ AProjectile* AShootableGun::SpawnProjectile(FTransform SpawnTransform, FVector I
 
 void AShootableGun::RegisterProjectile_Implementation(const FVector Axis, const float FiringTime)
 {
-	const FVector FiringStart = GetActorLocation() + Axis * DistanceFromCannon;
-	SpawnProjectile(FTransform(FiringStart), Axis * ProjectileSpeed + GetVelocity(), true);
+	if (!IsBroken())
+	{
+		const FVector FiringStart = GetActorLocation() + Axis * DistanceFromCannon;
+        SpawnProjectile(FTransform(FiringStart), Axis * ProjectileSpeed + GetVelocity(), true);
+	}
 }
 
 bool AShootableGun::RegisterProjectile_Validate(const FVector Axis, const float FiringTime)
@@ -219,23 +245,26 @@ bool AShootableGun::RegisterProjectile_Validate(const FVector Axis, const float 
 
 void AShootableGun::RegisterLineTraceHit_Implementation(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation)
 {
-	NextTimeFireable = FiringTime + 1/FireRate;
-	AController* DamageInstigator = nullptr;
-    if (GetInstigator())
-    {
-    	//UE_LOG(LogTemp, Log, TEXT("Instigator is valid"));
-        DamageInstigator = GetInstigator()->GetController();
-    }
-	else
+	if (!IsBroken())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Instigator is invalid"));
+		NextTimeFireable = FiringTime + 1/FireRate;
+        AController* DamageInstigator = nullptr;
+        if (GetInstigator())
+        {
+            //UE_LOG(LogTemp, Log, TEXT("Instigator is valid"));
+            DamageInstigator = GetInstigator()->GetController();
+        }
+        else
+        {
+        	UE_LOG(LogTemp, Error, TEXT("Instigator is invalid"));
+        }
+        for (int i = 0; i < Hit.Num(); ++i)
+        {
+        	//UE_LOG(LogTemp, Log, TEXT("%s was hit"), *Hit[i]->GetName());
+        	Hit[i]->TakeDamage(Damage, FDamageEvent(), DamageInstigator, this);
+        }
+        PlayFiringAnimationServer(StartLocation, EndLocation);
 	}
-	for (int i = 0; i < Hit.Num(); ++i)
-	{
-		//UE_LOG(LogTemp, Log, TEXT("%s was hit"), *Hit[i]->GetName());
-		Hit[i]->TakeDamage(Damage, FDamageEvent(), DamageInstigator, this);
-	}
-	PlayFiringAnimationServer(StartLocation, EndLocation);
 }
 
 bool AShootableGun::RegisterLineTraceHit_Validate(const TArray<AActor*>& Hit, const float FiringTime, FVector StartLocation, FVector EndLocation)

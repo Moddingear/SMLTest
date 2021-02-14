@@ -2,7 +2,7 @@
 .vs/
 
 #Rider config
-.idea/
+.idea/*
 
 # Compiled Object files
 *.slo

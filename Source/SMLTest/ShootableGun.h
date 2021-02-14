@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+
+#include "DamageableActor.h"
 #include "ShootableGun.generated.h"
 
 class AProjectile;
 
 UCLASS(BlueprintType, Blueprintable)
-class SMLTEST_API AShootableGun : public AActor
+class SMLTEST_API AShootableGun : public ADamageableActor
 {
 	GENERATED_BODY()
 	
@@ -18,7 +19,7 @@ public:
 	float FireRate;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Damage;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY()
 	float NextTimeFireable;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DistanceFromCannon;
@@ -26,10 +27,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsProjectile;
 	//cm/s, only if projectile
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "bIsProjectile"))
 	float ProjectileSpeed;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bIsProjectile"))
 	float MaxDistanceAfterPenetration;
 	//Used for length of raycast and lifetime of projectile
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -41,7 +42,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	TArray<AActor*> IgnoredActors;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+	UPROPERTY(Replicated)
 	FVector Target; //Used to replicate gun rotation
 
 	UPROPERTY(EditAnywhere)
@@ -51,15 +52,16 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMesh* GunMesh;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	UPROPERTY(BlueprintReadOnly,EditAnywhere)
 	UStaticMeshComponent* Gun;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "bIsProjectile"))
 	TSubclassOf<AProjectile> ProjectileClass;
 	// Sets default values for this actor's properties
 	AShootableGun();
 
 protected:
+	virtual void OnConstruction(const FTransform& Transform) override;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -107,4 +109,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void PlayFiringAnimation(FVector StartLocation, FVector EndLocation);
 	virtual void PlayFiringAnimation_Implementation(FVector StartLocation, FVector EndLocation);
+
+
 };
