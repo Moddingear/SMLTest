@@ -88,4 +88,6 @@ public:
 	virtual void OnDeath_Implementation();
 
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	virtual bool ShouldDestroyOnRespawn();
 };

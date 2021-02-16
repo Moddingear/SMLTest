@@ -74,7 +74,20 @@ void ASMLPlayerController::CloseEscMenu_Implementation()
 
 void ASMLPlayerController::ForceRespawn_Implementation()
 {
-	GetPawn()->Destroy();
+	if (GetPawn())
+	{
+		ADamageableCharacter* PlayerPawn = GetPawn<ADamageableCharacter>();
+		if (PlayerPawn)
+		{
+			if (!PlayerPawn->ShouldDestroyOnRespawn())
+			{
+				UnPossess();
+				return;
+			}
+		}
+		GetPawn()->Destroy();
+		return;
+	}
 }
 
 bool ASMLPlayerController::ForceRespawn_Validate()

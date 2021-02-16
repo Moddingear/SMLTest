@@ -30,7 +30,7 @@ AShootableGun::AShootableGun()
 	SetReplicatingMovement(true);
 	//bNetUseOwnerRelevancy = true;
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> BaseMeshHelper(TEXT("StaticMesh'/Game/drone/DroneGunBase.DroneGunBase'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> BaseMeshHelper(TEXT("StaticMesh'/Game/drone/MeshDroneGunBase.MeshDroneGunBase'"));
 	if(BaseMeshHelper.Succeeded())
 	{
 		BaseMesh = BaseMeshHelper.Object;
@@ -40,7 +40,7 @@ AShootableGun::AShootableGun()
 	Base->SetStaticMesh(BaseMesh);
 	RootComponent = Base;
 	
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> GunMeshHelper(TEXT("StaticMesh'/Game/drone/DroneGun.DroneGun'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> GunMeshHelper(TEXT("StaticMesh'/Game/drone/MeshDroneGun.MeshDroneGun'"));
 	if(GunMeshHelper.Succeeded())
 	{
 		GunMesh = GunMeshHelper.Object;

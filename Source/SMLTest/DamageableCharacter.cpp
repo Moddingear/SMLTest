@@ -116,3 +116,8 @@ float ADamageableCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 	return ActualDamage;
 }
 
+bool ADamageableCharacter::ShouldDestroyOnRespawn()
+{
+		return true;
+}
+
